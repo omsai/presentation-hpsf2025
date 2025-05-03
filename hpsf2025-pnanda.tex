@@ -39,9 +39,18 @@ sorting=none
 \addbibresource{\jobname.bib}
 
 \usepackage{tikz}
-\usetikzlibrary{calc}
+\usetikzlibrary{calc}           % ($ ... $)
+\usetikzlibrary{decorations.pathmorphing}    % zigzag
 \usetikzlibrary{fit}            % fit
+\usetikzlibrary{positioning}    % of
 \usetikzlibrary{shapes.symbols} % signal
+\tikzset{
+  invisible/.style={opacity=0,text opacity=0},
+  visible on/.style={alt=#1{}{invisible}},
+  alt/.code args={<#1>#2#3}{%
+    \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}
+  },
+}
 
 \usepackage{soul}               % \ul
 
@@ -73,31 +82,71 @@ sorting=none
 
 \subsection{Background about myself}
 \begin{frame}{\hspace{8cm}Background about myself}
-  \begin{columns}%[T]
-    \begin{column}{.8\framewidth}
-      \begin{description}[<+->][2024]
-      \item[2008] Gentoo Linux package developer for microscopy; %
-        bash-based packages
-      \item[2016] HPC sysadmin: %
-        supervisor learned about spack at SC'2016; %
-        33~explicit packages
-      \item[2022] Spack packages %
-        for immunology model calibration, drug and vaccine development
-      \item[2024] Wikipedia: tell me your spack stories!
-      \end{description}
-    \end{column}
-    \begin{column}{.2\framewidth}
-      \begin{tikzpicture}%[remember picture, overlay]
-        \node (gentoo) {%
-          \includegraphics[width=.55\textwidth]{logo-gentoo.png}};
-        \visible<3->{
-          \node [anchor = north, inner sep = 0pt] at (gentoo.south) {%
-            \includegraphics[width=\textwidth,clip,trim={8 8 10 5}]%
-            {im-gran.png}
-          };}
-      \end{tikzpicture}
-    \end{column}
-  \end{columns}
+  \begin{tikzpicture}[
+    remember picture,
+    overlay,
+    timepoint/.style = {
+      circle,
+      fill = black,
+      inner sep = 1pt
+    },
+    description/.style ={
+      inner sep = 0pt,
+      text width = 4.5cm
+    }
+    ]
+    \coordinate (y07) at ($ (current page.west) +(+1,0) $);
+    \coordinate (y24) at ($ (current page.east) +(-1,0) $);
+    \coordinate (y16) at ($ (y07) !.4! (y24) $);
+    \pgfmathparse{(2022 - 2016) / (2024 - 2016)}
+    \coordinate (y22) at ($ (y16) !\pgfmathresult! (y24) $);
+    \path [draw]
+    (y07)
+    node [timepoint] {}
+    node [below] {2007}
+    node [above, anchor = south] {\includegraphics[scale=.1]{logo-gentoo.png}}
+    node
+    [description, below = .75 of y07, anchor = north west, xshift = -1cm] {
+      \begin{itemize}[<+->]
+      \item Low barrier from\\user $\to$ developer
+      \item Use flags\\$\to$ spack variants
+      \end{itemize}
+    }
+    decorate
+    [decoration = {name = zigzag, pre length = 1cm, post length = 1cm}]
+    { (y07) -- (y16) }
+    (y16)
+    node [timepoint] {}
+    node [below] {2016}
+    node [above, anchor = south] {\includegraphics<+->[scale=.3]{logo-sc16.png}}
+    node [description, below = .75 of y16, anchor = north] {
+      \begin{itemize}[<+->]
+      \item<.-> HPC supervisor tells me about spack
+      \item Installed 33 packages on university cluster
+      \item Set spack as default on research lab server
+      \end{itemize}
+    }
+    --
+    (y22)
+    node [timepoint] {}
+    node [below] {2022}
+    node [above, anchor = south] {%
+      \includegraphics<+->[scale=0.45,clip,trim={8 8 10 5}]{im-gran.png}}
+    node [description, below = .75 of y22, anchor = north, text width = 5cm,
+    xshift = -1cm] {
+      \begin{itemize}[<+->]
+      \item<.-> Calibrate drug dosing for model of lung infection
+      \item<.-> 2~week walltime
+      \item<.-> Each sample 16~hrs
+      \end{itemize}
+    }
+    --
+    (y24)
+    node [timepoint] {}
+    node [below] {2024};
+    \node at (y24) [above, text width = 1.8cm, visible on = {<+->}]
+    {Wikipedia article: ``Spack (package $\phantom{(}$manager)''};
+  \end{tikzpicture}
 \end{frame}
 
 \subsection{Motivation for this talk}
