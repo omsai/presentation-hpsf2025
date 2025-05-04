@@ -163,8 +163,7 @@ sorting=none
         \end{description}
       \item Bridging GPU / NPU scientific libraries %
         from Linux to Windows and macOS
-      \item R and python: mixing traditional compatibility %
-        with NPU hardware optimization
+      \item R (and python): NPU hardware optimization
       \end{itemize}
     \end{column}
     \begin{column}{.4\framewidth}
@@ -304,11 +303,11 @@ sorting=none
       \item Current GPU R packages are {\color{alert}indirect}; %
         simply wrap around python / web interfaces %
         (tensorflow, keras3, ellmer, chattr)
-      \item SYCL, Kokkos, RAJA %
-        are C++ vendor neutral heterogeneous computing libraries
+      \item SYCL (compiler), Kokkos and RAJA (libraries) %
+        are C++ vendor~neutral heterogeneous computing approaches
       \item But R is a GNU project; %
         hard to replace gcc with clang for SYCL support, %
-        therefore Kokkos
+        therefore need a library-approach like Kokkos
       \item<5-> Use case of Bioconductor R package system
       \end{itemize}
     \end{column}
@@ -399,6 +398,7 @@ sorting=none
         \begin{itemize}[<.->]
         \item $\ge 2000$ packages, %
           $\approx 150k$ unique IP address downloads\footnotemark[1]
+        \item Impact of 5000--6000 yearly citations since 2019\footnotemark[1]
         \end{itemize}
       \item CI rebuilds all packages every 48 hours:
         \begin{itemize}[<.->]
@@ -406,8 +406,8 @@ sorting=none
         \item macOS 12, 13 (x86\_64, aarch64)
         \item Ubuntu Linux 24 (x86\_64, aarch64)
         \end{itemize}
-      \item Bioconductor trying to support CUDA this year %
-        for RbowtieCuda package (not vendor neutral)
+      \item Bioconductor released their first GPU package, RbowtieCuda, %
+        last month (April) --- not vendor neutral
       \end{itemize}
     \end{column}
     \begin{column}{.15\framewidth}
@@ -432,22 +432,27 @@ sorting=none
   \begin{columns}[T]
     \begin{column}{.85\framewidth}
       \begin{itemize}[<+->]
-      \item Bioconductor extensively uses S4 classes %
-        for package interoperability and object consistency
-      \item Pure R API that encapsulates Kokkos stack %
-        to shift complexity to a class interface and runner
+      \item Bioconductor S4 classes %
+        allow strict package interoperability; %
+        versioning scheme similar to OS release process
+      \item Provide R API that encapsulates Kokkos C++ stack using 2~packages
         \begin{enumerate}
-        \item<.-> S4 \ul{class} interface \#bio-kokkos algorithms and
-          DelayedArray, DelayedTensor classes
-        \item Expose Kokkos backend \ul{runner} for BiocParallel
+        \item<.-> S4 \ul{class} interface
           \begin{itemize}[<.->]
-          \item Other backends: %
+          \item DelayedArray, DelayedTensor S4 classes
+          \item Wrap \#bio-kokkos algorithms / kernels
+          \end{itemize}
+        \item Expose Kokkos backend \ul{runner} for BiocParallel
+          \begin{itemize}
+          \item<.-> Existing backends: %
             single CPU, %
             multicore, %
             socket cluster, %
             Redis cluster, %
             MPI cluster, %
             Batchtools (SLURM, etc.)
+          \item Possible future feature of combining backends %
+            (MPI with Multicore, MPI with BiocKokkos, etc.)
           \end{itemize}
         \end{enumerate}
       \end{itemize}
@@ -538,26 +543,28 @@ sorting=none
   \end{columns}
 \end{frame}
 
-\subsection{Proposed roadmap to use Spack for Kokkos R interface}
-\begin{frame}{\hspace{8cm}Proposed roadmap to use Spack\\%
-    \hspace{8cm}for Kokkos R interface}
+\subsection{Proposed OS roadmap  and vendor interest}
+\begin{frame}{\hspace{8cm}Proposed OS roadmap\\%
+    \hspace{8cm}and vendor interest}
   \begin{columns}[T]
     \begin{column}{.81\framewidth}
       \begin{itemize}[<+->]
-      \item Support spack kokkos development environment %
-        on \ul{all three operating systems}:
+      \item Spack kokkos GPU development environment %
+        on remaining operating systems:
         \begin{itemize}
-        \item<.-> Current focus: %
-          Canonical containerizes Windows 11 with LXC %
-          [could use Bioconductor’s Azure builder]
+        \item<.-> Windows 11 LXC container by Canonical\footnotemark[1] %
+          [Bioconductor production uses Azure builder]
         \item Apple license %
           limits running macOS on Apple hardware (Mac mini) %
-          [could use Bioconductor’s MacStadium.com]\footnotemark[1]
+          [Bioconductor production uses MacStadium.com]\footnotemark[2]
         \end{itemize}
-      \item Cross-compile for laptop microarchitectures and %
-        dynamically link at runtime
+      \item Ideally, vendors would help support Kokkos (e.g. via SYCL):
         \begin{itemize}
-        \item Minimize microarchitecture binary size
+        \item<.-> nVidia points to their Clara Parabricks containers, %
+          but needs 16GB GPU RAM, not open source(?)
+        \item Apple receptive, %
+          but need to build the business case %
+          for systems engineering software support of clang SYCL
         \end{itemize}
       \end{itemize}
     \end{column}
@@ -567,14 +574,15 @@ sorting=none
       \end{tikzpicture}
     \end{column}
   \end{columns}
-  \footnotetext[1]<2->{What GPU sandboxes you are using for macOS?}
+  \footnotetext[1]<1->{Not sure about GPU support in LXC container}
+  \footnotetext[2]<2->{What sandboxes you are using for macOS %
+    that exposes the GPU?}
 \end{frame}
 
 \section{Wrap up}
 
-\subsection{Landscape of software alternatives and vendor interest}
-\begin{frame}{\hspace{8cm}Landscape of software alternatives\\%
-    \hspace{8cm}and vendor interest}
+\subsection{Landscape of software alternatives}
+\begin{frame}{\hspace{8cm}Landscape of software alternatives}
   \begin{columns}[T]
     \begin{column}{.75\framewidth}
       \begin{itemize}[<+->]
@@ -584,19 +592,18 @@ sorting=none
         \begin{itemize}
         \item<.-> Running %
           \texttt{install.packages(...)} %
-          \ul{installs OS packages}
+          uses a repository of
+          \ul{precompiled OS packages} instead of Bioconductor sources
         \item Uses \texttt{bspm R} package (Bridge to System Package Manager)
+          root privilege escalation via inter-process communication (IPC)
         \item Demonstrates need for a project like spack
-        \item But advantage with spack is %
-          not completely replacing package source with pre-compiled binary, %
-          but linking with spack provided source or binary packages.
-        \end{itemize}
-      \item Ideally, vendors would help support Kokkos (e.g. via SYCL):
-        \begin{itemize}
-        \item<.-> nVidia points to their Clara Parabricks containers
-        \item Apple receptive, %
-          but need to build the business case %
-          for systems engineering software support of clang SYCL
+          \begin{itemize}
+          \item<.-> Keep package source and link to externals with spack
+          \item Support distros besides Ubuntu
+          \item Could automatically parse configure errors %
+            to install the relevant spack packages %
+            (like TinyTex does for LaTeX)
+          \end{itemize}
         \end{itemize}
       \end{itemize}
     \end{column}
@@ -637,7 +644,7 @@ sorting=none
     \begin{itemize}[<.->]
     \item e.g. Operating systems, Bioconductor
     \end{itemize}
-  \item Spack Kokkos package support on %
+  \item Kokkos OS support on %
     Windows $\ge 10$\footnotemark[1]
     (Intel Meteor Lake, AMD Ryzen XDNA, Qualcomm Snapdragon X) and %
     macOS $\ge 13.5$\footnotemark[2]
@@ -645,11 +652,7 @@ sorting=none
   \item Bioconductor R packages\footnotemark[3]:
     \begin{description}[S4 R class]
     \item[S4 R class]<.-> %
-      interface with Kokkos C++ and %
-      DelayedTensor, DelayedArray R packages.
-      %
-      Prioritize implementing algorithms to %
-      compare with nVidia Clara Parabricks
+      interface with DelayedTensor/Array R packages, Kokkos C++
     \item[Runner] BiocParallel Kokkos backend
     \end{description}
   \end{enumerate}
