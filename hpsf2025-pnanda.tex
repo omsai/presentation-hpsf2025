@@ -130,8 +130,8 @@ sorting=none
     (y22)
     node [timepoint] {}
     node [below] {2022}
-    node [above, anchor = south] {%
-      \includegraphics<+->[scale=0.45,clip,trim={8 8 10 5}]{im-gran.png}}
+    node [above, anchor = south, xshift = -1.5cm] {%
+      \includegraphics<+->[scale=0.5,clip,trim={8 8 10 5}]{im-gran.png}}
     node [description, below = .75 of y22, anchor = north, text width = 5cm,
     xshift = -1cm] {
       \begin{itemize}[<+->]
@@ -222,17 +222,19 @@ sorting=none
   \begin{columns}[T]
     \begin{column}{.85\framewidth}
       \begin{itemize}[<+->]
+      \item Python
+        \begin{itemize}[<.->]
+        \item Native C/C++ API extensions rarely used; too verbose
+        \item Cython, cffi, SWIG, Numba
+        \end{itemize}
       \item R
         \begin{itemize}
-        \item<.-> Native extensions API (Fortran, C, C++) %
-          easy to use and debug and %
-          R seamlessly uses gcc / clang compiler
-        \item Rcpp (C++) very widely used
-        \end{itemize}
-      \item Python
-        \begin{itemize}
-        \item<.-> Native C/C++ API extensions rarely used; too verbose
-        \item Cython, cffi, SWIG, Numba
+        \item<.-> Native extensions API (Fortran, C, C++17) easy to use%
+          \footnotemark[1]
+        \item<.-> Easy to debug with \texttt{R -d gdb} / \texttt{R -d lldb}
+        \item Probably your favorite FFI for a higher language, %
+          even if you don't know it yet :)
+        \item R bundles gcc on Windows
         \end{itemize}
       \item Mostly going to talk about R because of funding
       \end{itemize}
@@ -292,6 +294,8 @@ sorting=none
       \end{tikzpicture}
     \end{column}
   \end{columns}
+  \footnotetext[1]<2->{%
+    \url{https://cran.r-project.org/doc/manuals/r-release/R-exts.html}}
 \end{frame}
 
 \subsection{GPU / NPU support in R has very little baggage}
