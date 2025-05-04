@@ -667,16 +667,81 @@ sorting=none
 
 \section{Thank you}
 
+{
+  \setbeamercolor{normal text}{fg=white}
+  \usebeamercolor[fg]{normal text}
+  \setbeamercolor{item}{fg=white}
 \begin{frame}[noframenumbering, plain]
   \begin{tikzpicture}[remember picture, overlay]
     \node at (current page.center) {%
       \includegraphics[width=\paperwidth]{im-hpsf-bg-title.png}};
+    \node at (current page.center) [yshift = 2.7cm] {%
+      \LARGE Thank you!};
+    \node at (current page.south east) [anchor = south east] {%
+      \DTMnow{}};
   \end{tikzpicture}
-  \color{white}
-  \begin{center}
-    \LARGE Thank you!
-  \end{center}
-  \let\thefootnote\relax\footnotetext{\hfill{}\color{white}\DTMnow{}}
+  \vspace*{0.8cm}
+  \begin{columns}[T]
+    \begin{column}{.37\framewidth}
+      University of Connecticut HPC
+      \begin{itemize}
+      \item Ed Swindelles
+      \item Dave Christianson
+      \item Tinyang Xu
+      \end{itemize}
+
+      University of Michigan
+      \begin{itemize}
+      \item Joe Waliga
+      \item Denise Kirschner
+      \end{itemize}
+
+      University of Pittsburgh
+      \begin{itemize}
+      \item Tatum Liparulo
+      \item Ramakrishna Suresh
+      \item Jason Shoemaker
+      \end{itemize}
+    \end{column}
+    \begin{column}{.35\framewidth}
+      \vspace{3.5\baselineskip}
+      Argonne National Laboratory
+      \begin{itemize}
+      \item Ray Loy
+      \item Sean Koyama
+      \item Haritha Som
+      \end{itemize}
+      Gentoo
+      \begin{itemize}
+      \item Brandon Mesquita
+      \item Roy Bamford
+      \item Diego Elio Petten\`o
+      \item Donnie Berkholz
+      \end{itemize}
+    \end{column}
+    \begin{column}{.32\framewidth}
+      Spack
+      \begin{itemize}
+      \item Adam J. Stewart
+      \item Peter Scheibel
+      \item Tammy Dalhgren
+      \item Todd Gamblin
+      \end{itemize}
+
+      Kokkos
+      \begin{itemize}
+      \item Christian Trott
+      \end{itemize}
+
+      Bioconductor
+      \begin{itemize}
+      \item Martin Morgan
+      \item Luke Tierney
+      \item Vince Carey
+      \end{itemize}
+    \end{column}
+  \end{columns}
 \end{frame}
+}
 
 \end{document}
