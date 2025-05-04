@@ -74,6 +74,45 @@ sorting=none
   \begin{tikzpicture}[remember picture, overlay]
     \node at (current page.center) {%
       \includegraphics[width=\paperwidth]{im-hpsf-bg-title.png}};
+    % Sponsors:
+    % Linux Foundation
+    % DOE Advanced Scientific Computing Research Program
+    % Wellcome Leap
+    % NIH NHGRI
+    % NIH NIAID
+    % NSF ACCESS
+    \node (lf) at (current page.west)
+    [anchor = west, xshift = 1cm, yshift = 0.5cm] {
+      \includegraphics[width=.2\framewidth]{logo-linux-foundation.pdf}};
+    \node (doe) at (lf.south west) [anchor = north west, yshift = -0.2cm] {
+      \includegraphics[width=.25\framewidth]{logo-doe.pdf}};
+    \node (anl) at (doe.south west) [anchor = north west, yshift = -0.2cm] {
+      \includegraphics[width=.2\framewidth]{logo-argonne.png}};
+
+    \node (leap) at (current page.east)
+    [anchor = east, xshift = -1cm, yshift = 0.2cm] {
+      \includegraphics[width=.12\framewidth]{logo-leap.pdf}};
+    \node (nhgri) at ($ (leap.south west) + (-1.5cm,0) $)
+    [anchor = north west, yshift = -0.2cm] {
+      \includegraphics[height=.055\framewidth]{logo-nhgri.pdf}};
+    \node (niaid) at (nhgri.south west)
+    [anchor = north west, yshift = -0.2cm] {
+      \includegraphics[height=.06\framewidth]{logo-niaid.pdf}};
+
+    \node (umich) at (current page.south)
+    [anchor = south, yshift = 0.5cm] {
+      \includegraphics[height=.035\framewidth]{logo-umich.pdf}};
+    \node (uconn) at (umich.north west)
+    [anchor = north east, xshift = -0.5cm] {
+      \includegraphics[height=.05\framewidth]{logo-uconn.pdf}};
+    \node (pitt) at (umich.east)
+    [anchor = west, xshift = -0.75cm, yshift = -0.1cm] {
+      \includegraphics[height=.25\framewidth]{logo-pitt.pdf}};
+
+    \node at (current page.south east)
+    [anchor = south east, text width = 0.9cm,
+    execute at begin node = \setlength{\baselineskip}{6pt}] {%
+      \color{white}\scriptsize\par Funder logos shown};
   \end{tikzpicture}
   \maketitle{}
 \end{frame}
