@@ -110,9 +110,9 @@ sorting=none
       \includegraphics[height=.25\framewidth]{logo-pitt.pdf}};
 
     \node at (current page.south east)
-    [anchor = south east, text width = 0.9cm,
+    [anchor = south east, text width = 2.2cm,
     execute at begin node = \setlength{\baselineskip}{6pt}] {%
-      \color{white}\scriptsize\par Funder logos shown};
+      \color{white}\scriptsize\par Logos of funders of HPC or spack activities};
   \end{tikzpicture}
   \maketitle{}
 \end{frame}
@@ -445,7 +445,7 @@ sorting=none
         \end{itemize}
       \item CI rebuilds all packages every 48 hours:
         \begin{itemize}[<.->]
-        \item Windows Server 2022 (x86\_64)
+        \item Windows Server 2022 (x86\_64) --- majority of users
         \item macOS 12, 13 (x86\_64, aarch64)
         \item Ubuntu Linux 24 (x86\_64, aarch64)
         \end{itemize}
@@ -478,12 +478,13 @@ sorting=none
       \item Bioconductor S4 classes %
         allow strict package interoperability; %
         versioning scheme similar to OS release process
-      \item Provide R API that encapsulates Kokkos C++ stack using 2~packages
+      \item Provide an API to interface with Kokkos C++ using 2~packages
         \begin{enumerate}
-        \item<.-> S4 \ul{class} interface
+        \item<.-> Data \ul{interfaces} and examples
           \begin{itemize}[<.->]
-          \item DelayedArray, DelayedTensor S4 classes
-          \item Wrap \#bio-kokkos algorithms / kernels
+          \item Interfaces for DelayedArray, DelayedTensor S4 classes
+          \item Examples using kokkos kernels %
+            for \#bio-kokkos relevant algorithms
           \end{itemize}
         \item Expose Kokkos backend \ul{runner} for BiocParallel
           \begin{itemize}
@@ -683,6 +684,7 @@ sorting=none
     \hspace{8cm}independently}
   \begin{enumerate}[<+->]
   \item Spack \texttt{bspm} backend to seamlessly install spack packages from R
+    with speed up from a build cache
   \item Spack concretizer ``release'' versioning constraints
     \begin{itemize}[<.->]
     \item e.g. Operating systems, Bioconductor
@@ -693,8 +695,8 @@ sorting=none
     macOS $\ge 13.5$\footnotemark[2]
     (Apple silicon)
   \item Bioconductor R packages\footnotemark[3]:
-    \begin{description}[S4 R class]
-    \item[S4 R class]<.-> %
+    \begin{description}[Data interface]
+    \item[Data interface]<.-> %
       interface with DelayedTensor/Array R packages, Kokkos C++
     \item[Runner] BiocParallel Kokkos backend
     \end{description}
@@ -717,7 +719,7 @@ sorting=none
     \node at (current page.center) [yshift = 2.7cm] {%
       \LARGE Thank you!};
     \node at (current page.south east) [anchor = south east] {%
-      \DTMnow{}};
+      Built time: \DTMnow{}};
   \end{tikzpicture}
   \vspace*{0.8cm}
   \begin{columns}[T]
@@ -767,9 +769,10 @@ sorting=none
       \item Todd Gamblin
       \end{itemize}
 
-      Kokkos
+      Kokkos, SYCL
       \begin{itemize}
       \item Christian Trott
+      \item Thomas Applencourt
       \end{itemize}
 
       Bioconductor
