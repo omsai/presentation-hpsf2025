@@ -14,29 +14,17 @@ xcolor={usenames}
 \graphicspath{ {img/} }
 \setbeamertemplate{navigation symbols}{}
 \setbeamertemplate{footline}[frame number]
-\setbeamercolor{titlelike}{fg=white}
+\setbeamercolor{footline}{fg=white}
+\setbeamertemplate{footline}{
+  \vspace{0.02\paperheight}
+  \hspace{4pt}\textbf{May 5--8, 2025 \quad Chicago, IL}\quad\textbf{\color{hpsf-green}\#HPSFcon}\hfill\insertframenumber\hspace{4pt}
+  \vspace{0.02\paperheight}
+}
 \setbeamercolor{author}{fg=white}
 \setbeamercolor{institute}{fg=white}
 \setbeamercolor{date}{fg=white}
 \renewcommand{\footnoterule}{}
-\usepackage{textpos}              % \textblock*
-\addtobeamertemplate{frametitle}{%
-  \begin{textblock*}{\paperwidth}(-28.3pt, 0pt)
-    \includegraphics[width=\paperwidth]{im-hpsf-bg-slide.png}
-  \end{textblock*}
-  \vspace*{0.1cm}
-}{
-  % Adjust space between title and text per
-  % https://latex.org/forum/viewtopic.php?p=92593#p92593
-  \vspace*{0.4cm}
-}
-
-\usepackage[
-backend=biber,
-style=authoryear,
-sorting=none
-]{biblatex}
-\addbibresource{\jobname.bib}
+\definecolor{hpsf-green}{RGB}{0,176,80}
 
 \usepackage{tikz}
 \usetikzlibrary{calc}           % ($ ... $)
@@ -51,6 +39,38 @@ sorting=none
     \alt<#1>{\pgfkeysalso{#2}}{\pgfkeysalso{#3}}
   },
 }
+
+\addtobeamertemplate{frametitle}{%
+  \begin{tikzpicture}[remember picture, overlay]
+    \node (bg) [anchor = north, inner sep = 0pt, outer sep = 0pt]
+    at (current page.north) {%
+      \includegraphics[width=\paperwidth]{im-hpsf-bg.png}};
+    \fill [white]
+    (current page.north east) rectangle
+    % 0.45 / 7.51 = 0.06
+    ($ (current page.south west) + (0, 0.06\paperheight) $);
+    \node [
+    anchor = north west,
+    inner sep = 0pt,
+    outer sep = 0pt,
+    % 11.08 / 13.33 = 0.8312078
+    xshift = 0.8312078\paperwidth,
+    %  0.49 /  7.51 = 0.06524634
+    yshift = -0.06524634\paperheight
+    ]
+    at (current page.north west) {%
+      % 1.93 / 13.33 = 0.1447862
+      \includegraphics[width=0.1447862\paperwidth]{logo-hpsf-black.png}};
+  \end{tikzpicture}
+}{
+}
+
+\usepackage[
+backend=biber,
+style=authoryear,
+sorting=none
+]{biblatex}
+\addbibresource{\jobname.bib}
 
 \usepackage{soul}               % \ul
 
@@ -68,12 +88,39 @@ sorting=none
 
 \section{Title}
 
+{
+\setbeamercolor{titlelike}{fg=white}
 % Hide frame number on the title slide using noframenumbering,plain options per
 % https://tex.stackexchange.com/a/317983
 \begin{frame}[noframenumbering, plain]
   \begin{tikzpicture}[remember picture, overlay]
-    \node at (current page.center) {%
-      \includegraphics[width=\paperwidth]{im-hpsf-bg-title.png}};
+    \node [
+    anchor = north,
+    inner sep = 0pt,
+    outer sep = 0pt
+    ]
+    at (current page.north) {%
+      \includegraphics[width=\paperwidth]{im-hpsf-bg.png}};
+    \node [
+    color = hpsf-green,
+    anchor = north west,
+    % 0.33 / 13.33 = 0.02475619
+    xshift = +0.02475619\paperwidth,
+    % 0.49 /  7.51 = 0.06524634
+    yshift = -0.06524634\paperheight
+    ] at (current page.north west) {\textbf{\#HPSFcon}};
+    \node [
+    anchor = north west,
+    inner sep = 0pt,
+    outer sep = 0pt,
+    % 9.69 / 13.33 = 0.7269317
+    % 0.49 /  7.51 = 0.06524634
+    xshift = +0.726931\paperwidth,
+    yshift = -0.06524634\paperheight
+    ]
+    at (current page.north west) {%
+      % 3.32 / 13.33 = 0.2490623
+      \includegraphics[width=0.2490623\paperwidth]{logo-hpsf.png}};
     % Sponsors:
     % Linux Foundation
     % DOE Advanced Scientific Computing Research Program
@@ -116,11 +163,12 @@ sorting=none
   \end{tikzpicture}
   \maketitle{}
 \end{frame}
+}
 
 \section{Background}
 
 \subsection{Background about myself}
-\begin{frame}{\hspace{8cm}Background about myself}
+\begin{frame}{Background about myself}
   \begin{tikzpicture}[
     remember picture,
     overlay,
@@ -134,8 +182,8 @@ sorting=none
       text width = 4.5cm
     }
     ]
-    \coordinate (y07) at ($ (current page.west) +(+1,0) $);
-    \coordinate (y24) at ($ (current page.east) +(-1,0) $);
+    \coordinate (y07) at ($ (current page.west) +(+1,0.7) $);
+    \coordinate (y24) at ($ (current page.east) +(-1,0.7) $);
     \coordinate (y16) at ($ (y07) !.4! (y24) $);
     \pgfmathparse{(2022 - 2016) / (2024 - 2016)}
     \coordinate (y22) at ($ (y16) !\pgfmathresult! (y24) $);
@@ -143,7 +191,7 @@ sorting=none
     (y07)
     node [timepoint] {}
     node [below] {2007}
-    node [above, anchor = south] {\includegraphics[scale=.1]{logo-gentoo.png}}
+    node [above, anchor = south] {\includegraphics[scale=.08]{logo-gentoo.png}}
     node
     [description, below = .75 of y07, anchor = north west, xshift = -1cm] {
       \begin{itemize}[<+->]
@@ -157,7 +205,7 @@ sorting=none
     (y16)
     node [timepoint] {}
     node [below] {2016}
-    node [above, anchor = south] {\includegraphics<+->[scale=.3]{logo-sc16.png}}
+    node [above, anchor = south, xshift = -1cm] {\includegraphics<+->[scale=.3]{logo-sc16.png}}
     node [description, below = .75 of y16, anchor = north] {
       \begin{itemize}[<+->]
       \item<.-> HPC supervisor tells me about spack
@@ -169,12 +217,12 @@ sorting=none
     (y22)
     node [timepoint] {}
     node [below] {2022}
-    node [above, anchor = south, xshift = -1.5cm] {%
+    node [above, anchor = south, xshift = -1.8cm] {%
       \includegraphics<+->[scale=0.5,clip,trim={8 8 10 5}]{im-gran.png}}
     node [description, below = .75 of y22, anchor = north, text width = 5cm,
     xshift = -1cm] {
       \begin{itemize}[<+->]
-      \item<.-> Calibrate drug dosing for model of lung infection
+      \item<.-> Calibrate drug dosing for multiscale model of lung infection
       \item<.-> 2~week walltime
       \item<.-> Each sample 16~hrs
       \end{itemize}
@@ -189,7 +237,7 @@ sorting=none
 \end{frame}
 
 \subsection{Motivation for this talk}
-\begin{frame}{\hspace{8cm}Motivation for this talk}
+\begin{frame}{Motivation for this talk}
   \begin{columns}[T]
     \begin{column}{.6\framewidth}
       \begin{itemize}[<+->]
@@ -256,8 +304,7 @@ sorting=none
 \end{frame}
 
 \subsection{Foreign function interfaces (FFI) in R and python}
-\begin{frame}{\hspace{8cm}Foreign function interfaces (FFI)\\%
-    \hspace{8cm}in R and python}
+\begin{frame}{Foreign function interfaces (FFI) in R and python}
   \begin{columns}[T]
     \begin{column}{.85\framewidth}
       \begin{itemize}[<+->]
@@ -338,8 +385,7 @@ sorting=none
 \end{frame}
 
 \subsection{GPU / NPU support in R has very little baggage}
-\begin{frame}{\hspace{8cm}GPU / NPU support in R\\%
-    \hspace{8cm}has very little ``baggage''}
+\begin{frame}{GPU / NPU support in R has very little ``baggage''}
   \begin{columns}[T]
     \begin{column}{.85\framewidth}
       \begin{itemize}[<+->]
@@ -432,8 +478,7 @@ sorting=none
 \end{frame}
 
 \subsection{Bioconductor R packages for biological sciences}
-\begin{frame}{\hspace{8cm}Bioconductor R packages\\%
-    \hspace{8cm}for biological sciences}
+\begin{frame}{Bioconductor R packages for biological sciences}
   \begin{columns}[T]
     \begin{column}{.85\framewidth}
       \begin{itemize}[<+->]
@@ -470,8 +515,7 @@ sorting=none
 \section{Proposal}
 
 \subsection{Proposed R stack for Kokkos NPU support}
-\begin{frame}{\hspace{8cm}Proposed R stack\\%
-    \hspace{8cm}for Kokkos NPU support}
+\begin{frame}{Proposed R stack for Kokkos NPU support}
   \begin{columns}[T]
     \begin{column}{.85\framewidth}
       \begin{itemize}[<+->]
@@ -588,8 +632,7 @@ sorting=none
 \end{frame}
 
 \subsection{Proposed OS roadmap  and vendor interest}
-\begin{frame}{\hspace{8cm}Proposed OS roadmap\\%
-    \hspace{8cm}and vendor interest}
+\begin{frame}{Proposed OS roadmap and vendor interest}
   \begin{columns}[T]
     \begin{column}{.81\framewidth}
       \begin{itemize}[<+->]
@@ -626,7 +669,7 @@ sorting=none
 \section{Wrap up}
 
 \subsection{Landscape of software alternatives}
-\begin{frame}{\hspace{8cm}Landscape of software alternatives}
+\begin{frame}{Landscape of software alternatives}
   \begin{columns}[T]
     \begin{column}{.75\framewidth}
       \begin{itemize}[<+->]
@@ -680,8 +723,7 @@ sorting=none
 \end{frame}
 
 \subsection{4 projects we can work on independently}
-\begin{frame}{\hspace{8cm}4 projects we can work on\\%
-    \hspace{8cm}independently}
+\begin{frame}{4 projects we can work on independently}
   \begin{enumerate}[<+->]
   \item Spack \texttt{bspm} backend to seamlessly install spack packages from R
     with speed up from a build cache
@@ -714,12 +756,11 @@ sorting=none
   \setbeamercolor{item}{fg=white}
 \begin{frame}[noframenumbering, plain]
   \begin{tikzpicture}[remember picture, overlay]
-    \node at (current page.center) {%
-      \includegraphics[width=\paperwidth]{im-hpsf-bg-title.png}};
-    \node at (current page.center) [yshift = 2.7cm] {%
+    \node [anchor = north, inner sep = 0pt, outer sep = 0pt]
+    at (current page.north) {%
+      \includegraphics[width=\paperwidth]{im-hpsf-bg.png}};
+    \node at (current page.north) [anchor = north, yshift = -0.7cm] {%
       \LARGE Thank you!};
-    \node at (current page.south east) [anchor = south east] {%
-      Built time: \DTMnow{}};
   \end{tikzpicture}
   \vspace*{0.8cm}
   \begin{columns}[T]
@@ -763,9 +804,9 @@ sorting=none
     \begin{column}{.32\framewidth}
       Spack
       \begin{itemize}
-      \item Adam J. Stewart
       \item Peter Scheibel
       \item Tammy Dalhgren
+      \item Adam J. Stewart
       \item Todd Gamblin
       \end{itemize}
 
