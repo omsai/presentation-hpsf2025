@@ -1,17 +1,15 @@
-name: create-pdfs
-run-name: ${{ github.actor }} is creating PDFs
+name: publish-pdf
 on: [push]                      # yamllint disable-line rule:truthy
 jobs:
-  check-lualatex-version:
+  publish-pdf:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
       - uses: xu-cheng/latex-action@v4
         with:
-          root_file: |
-            hpsf2025-pnanda.tex
+          root_file: hpsf2025-pnanda.tex
           latexmk_use_lualatex: true
-      - uses: actions/upload-artifact@v4
+      - uses: softprops/action-gh-release@v2
         with:
-          name: PDF
-          path: hpsf2025-pnanda.pdf
+          name: hpsf2025-pnanda.pdf
+          files: hpsf2025-pnanda.pdf
